@@ -1,0 +1,106 @@
+---
+// First screen: ultramarine field, H1 (exact text from veon-concept), one sentence, two direct actions, the connection bus.
+// No images: LCP is the H1 text. The bus animates (effect 1); H1 and buttons never do.
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import { contacts, busNodes } from "../data/site";
+---
+<section id="hero" class="hero tone-accent" data-rec="U-R005,U-R004,P-R001" aria-labelledby="hero-title">
+  <div class="hero__inner container">
+    <div class="hero__text">
+      <h1 id="hero-title">Корпоративні сайти й портали, з'єднані з вашим бізнесом</h1>
+      <p class="hero__lead">
+        <span class="hero__lead-long">Від лендингу до складної системи: Drupal, WordPress або Laravel під вашу архітектуру, а CRM, ERP, маркетинг і аналітика підключені до сайту.</span>
+        <span class="hero__lead-short">Від лендингу до складної системи з CRM, ERP і аналітикою, підключеними до сайту.</span>
+      </p>
+      <div class="hero__actions">
+        <Button href={contacts.telegram} icon="telegram" external rec="U-R005">Написати в Telegram</Button>
+        <Button href={contacts.phoneHref} icon="phone" variant="secondary" rec="U-R005,U-R002" class="num" label={`Подзвонити: ${contacts.phoneText}`}>{contacts.phoneText}</Button>
+      </div>
+      <p class="hero__fact" data-rec="U-R004">Brander працює з 2009 року, офіс у Харкові</p>
+    </div>
+
+    <div class="bus" data-bus>
+      <p class="bus__site"><span class="node-mark bus__site-mark" aria-hidden="true"></span>Ваш сайт</p>
+      <ol class="bus__nodes" aria-label="Що підключаємо до сайту">
+        {busNodes.map((n, i) => (
+          <li class="bus__item" style={`--i:${i}`}>
+            <a class="bus__node" href={n.target}>
+              <span class="node-mark" aria-hidden="true"></span>
+              <span class="bus__label">{n.label}</span>
+              <span class="bus__hint">{n.hint}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <span class="bus__line" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: clip; }
+  .hero__inner { display: grid; gap: var(--s-5); padding-block: var(--s-5) var(--s-5); }
+  .hero__text { display: grid; gap: var(--s-3); max-width: 62rem; }
+  .hero h1 { max-width: 11.5em; text-wrap: balance; }
+  .hero__lead { font-size: var(--fs-lead); line-height: 1.45; color: var(--color-on-accent-muted); max-width: 40rem; }
+  .hero__lead-long { display: none; }
+  .hero__actions { display: grid; gap: 0.75rem; margin-top: var(--s-1); }
+  .hero__actions :global(.btn) { width: 100%; justify-content: flex-start; }
+  .hero__actions :global(.btn__text) { margin-right: auto; }
+  .hero__fact { font-size: var(--fs-small); color: var(--color-on-accent-muted); }
+
+  /* Bus: vertical on phones, horizontal from 1024 */
+  .bus { position: relative; padding-left: calc(var(--node) / 2 - 1px); }
+  .bus__site { display: flex; align-items: center; gap: 0.75rem; font: 600 var(--fs-small)/1.2 var(--font-body); margin: 0 0 var(--s-1) calc(-1 * (var(--node) / 2 - 1px)); }
+  .bus__site-mark { background: var(--color-on-accent); }
+  .bus__line { position: absolute; left: calc(var(--node) / 2 - 1px); top: calc(var(--node) / 2); bottom: 22px; width: var(--line); background: var(--color-on-accent); transform-origin: top; }
+  .bus__nodes { display: grid; }
+  .bus__item { position: relative; z-index: 1; }
+  .bus__node { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 0.75rem; min-height: var(--tap); margin-left: calc(-1 * (var(--node) / 2 - 1px)); text-decoration: none; color: var(--color-on-accent); }
+  .bus__node .node-mark { background: var(--color-accent); }
+  .bus__label { font-weight: 500; }
+  .bus__hint { display: none; }
+  .bus__node:hover .node-mark, .bus__node:focus-visible .node-mark { background: var(--color-on-accent); }
+
+  @media (min-width: 480px) {
+    .hero__actions { grid-template-columns: repeat(2, max-content); }
+    .hero__actions :global(.btn) { width: auto; }
+  }
+  @media (min-width: 768px) {
+    .hero__lead-long { display: inline; }
+    .hero__lead-short { display: none; }
+  }
+  @media (min-width: 1024px) {
+    .hero__inner { min-height: calc(100svh - var(--header-h)); max-height: 60rem; grid-template-rows: 1fr auto; padding-block: var(--s-6) var(--s-5); align-content: space-between; }
+    .hero__text { align-self: center; }
+    .bus { padding: 0; padding-top: var(--s-4); }
+    .bus__site { position: absolute; left: 0; top: 0; margin: 0; }
+    .bus__line { left: 0; right: 0; top: calc(var(--s-4) + var(--node) / 2 - 1px); bottom: auto; width: auto; height: var(--line); transform-origin: left; }
+    .bus__nodes { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); }
+    .bus__node { grid-template-columns: 1fr; row-gap: 0.75rem; margin: 0; align-items: start; padding-bottom: var(--s-4); }
+    .bus__label { font-size: 0.9375rem; line-height: 1.3; }
+    .bus__hint {
+      display: block; position: absolute; left: 0; top: calc(100% - var(--s-4) + 0.25rem); width: max-content; max-width: 100%;
+      font-size: var(--fs-small); line-height: 1.35; color: var(--color-on-accent-muted);
+      clip-path: inset(0 100% 0 0); transition: clip-path 220ms var(--ease-out);
+    }
+    .bus__node:hover .bus__hint, .bus__node:focus-visible .bus__hint { clip-path: inset(0 0 0 0); }
+  }
+
+  /* Effect 1: the bus connects (line, then nodes one by one). Only once scripting runs. */
+  :global(.js) .bus__line { animation: bus-line 500ms var(--ease-out) 150ms both; }
+  :global(.js) .bus__item { animation: bus-node 360ms var(--ease-out) both; animation-delay: 200ms; }
+  @media (min-width: 1024px) {
+    :global(.js) .bus__line { animation-name: bus-line-x; animation-duration: 700ms; }
+    :global(.js) .bus__item { animation-delay: calc(300ms + var(--i) * 60ms); }
+  }
+  @keyframes bus-line { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes bus-line-x { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes bus-node { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .bus__line, :global(.js) .bus__item { animation: none; }
+    .bus__hint { transition: none; }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+// «Почнімо з Discovery»: the end node of the scheme. Three equal terminals (Telegram, phone, e-mail as text + copy).
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<section id="contact" class="contact section tone-accent" data-rec="U-R006,U-R003,S-R003" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="contact__head">
+      <span class="node-mark contact__node" aria-hidden="true"></span>
+      <h2 id="contact-title">Почнімо з Discovery</h2>
+      <p class="section__lead">Перша розмова — знайомство з вашою бізнес-моделлю, клієнтами й каналами. Після неї зрозуміло масштаб, архітектуру й порядок оцінки.</p>
+    </div>
+
+    <ul class="terminals">
+      <li class="terminal">
+        <p class="terminal__k"><Icon name="telegram" />Telegram</p>
+        <a class="terminal__v" href={contacts.telegram} target="_blank" rel="noopener">@branderstudio</a>
+        <p class="terminal__hint">Швидкий старт розмови без дзвінка</p>
+      </li>
+      <li class="terminal">
+        <p class="terminal__k"><Icon name="phone" />Телефон</p>
+        <a class="terminal__v num" href={contacts.phoneHref} data-rec="U-R002">{contacts.phoneText}</a>
+        <p class="terminal__hint">Подзвоніть, щоб обговорити проєкт</p>
+      </li>
+      <li class="terminal">
+        <p class="terminal__k"><Icon name="mail" />E-mail</p>
+        <a class="terminal__v terminal__v--mail" href={`mailto:${contacts.email}`} data-rec="U-R003,S-R003">{contacts.email}</a>
+        <p class="terminal__hint">
+          <span>Надішліть опис сайту або ТЗ</span>
+          <button class="copy" type="button" data-copy={contacts.email} hidden><Icon name="copy" size={18} /><span data-copy-label>Копіювати</span></button>
+        </p>
+        <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+      </li>
+    </ul>
+
+    <p class="contact__address">Офіс: {contacts.address}</p>
+  </div>
+</section>
+
+<script>
+  // Copy the e-mail (shown only when scripting and the Clipboard API are available).
+  const btn = document.querySelector<HTMLButtonElement>("[data-copy]");
+  const status = document.querySelector<HTMLElement>("[data-copy-status]");
+  if (btn && navigator.clipboard) {
+    btn.hidden = false;
+    const label = btn.querySelector<HTMLElement>("[data-copy-label]");
+    btn.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+        if (label) label.textContent = "Скопійовано";
+        if (status) status.textContent = "E-mail скопійовано";
+        window.setTimeout(() => { if (label) label.textContent = "Копіювати"; if (status) status.textContent = ""; }, 2000);
+      } catch { /* clipboard denied: the e-mail stays visible as text */ }
+    };
+  }
+</script>
+
+<style>
+  .contact__head { position: relative; display: grid; gap: var(--s-2); max-width: 48rem; margin-bottom: var(--s-6); }
+  .contact__node { width: 20px; height: 20px; background: var(--color-on-accent); color: var(--color-on-accent); }
+  .terminals { display: grid; gap: var(--gap); }
+  .terminal { display: grid; gap: var(--s-1); align-content: start; padding: var(--s-3); border: 1.5px solid var(--color-on-accent-muted); border-radius: var(--radius); min-width: 0; }
+  .terminal__k { display: flex; align-items: center; gap: 0.5rem; font-size: var(--fs-small); font-weight: 600; color: var(--color-on-accent-muted); }
+  .terminal__v { display: inline-flex; align-items: center; min-height: var(--tap); font: 500 var(--fs-value)/1.15 var(--font-display); font-variation-settings: var(--display-axes); color: var(--color-on-accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; overflow-wrap: anywhere; transition: color var(--dur-fast) var(--ease-out); }
+  .terminal__v:hover { color: var(--color-on-accent-muted); }
+  .terminal__v:active { transform: scale(.98); }
+  .terminal__v--mail { font-size: clamp(1.125rem, 0.9rem + 0.9vw, 1.625rem); }
+  .terminal__hint { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1) var(--s-2); font-size: var(--fs-small); color: var(--color-on-accent-muted); }
+  .copy { display: inline-flex; align-items: center; gap: 0.4rem; min-height: var(--tap); padding: 0 0.75rem; border: 1.5px solid var(--color-on-accent); border-radius: var(--radius); background: transparent; color: var(--color-on-accent); font: 600 var(--fs-small)/1 var(--font-body); cursor: pointer; transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-press) var(--ease-out); }
+  .copy:hover { background: var(--color-on-accent); color: var(--color-text); }
+  .copy:active { transform: scale(.98); }
+  .copy[hidden] { display: none; }
+  .contact__address { margin-top: var(--s-5); color: var(--color-on-accent-muted); }
+  @media (min-width: 1024px) {
+    .terminals { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .terminal { padding: var(--s-4); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .terminal__v:active, .copy:active { transform: none; }
+  }
+</style>

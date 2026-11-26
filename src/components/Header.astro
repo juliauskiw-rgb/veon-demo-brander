@@ -1,0 +1,129 @@
+---
+// Sticky light header: black wordmark → #top, 5 anchors, language, phone as text, «Обговорити проєкт».
+// 390: wordmark, phone and Telegram icons, menu (<details>: works without JS).
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import { contacts, nav, NOTE_FUTURE } from "../data/site";
+---
+<header class="header">
+  <div class="header__inner container">
+    <a class="header__logo" href="#top" data-rec="U-R001,S-R003" aria-label="Brander — на початок сторінки">
+      <img src="/brander-logo.svg" alt="Brander" width="147" height="41" />
+    </a>
+
+    <nav class="header__nav" aria-label="Розділи сторінки" data-rec="U-R012">
+      <ul>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="header__lang" aria-label="Мова сайту" role="group">
+      <span class="header__lang-current" aria-current="true">UA</span>
+      <FutureLink note={NOTE_FUTURE} class="header__lang-item">EN</FutureLink>
+      <FutureLink note={NOTE_FUTURE} class="header__lang-item">RU</FutureLink>
+    </div>
+
+    <a class="header__phone num" href={contacts.phoneHref} data-rec="U-R005,U-R002,SM-R015">{contacts.phoneText}</a>
+    <a class="btn btn--primary header__cta" href="#contact">Обговорити проєкт</a>
+
+    <div class="header__quick">
+      <a class="header__icon" href={contacts.phoneHref} aria-label={`Подзвонити: ${contacts.phoneText}`} data-rec="U-R005,U-R002"><Icon name="phone" /></a>
+      <a class="header__icon" href={contacts.telegram} target="_blank" rel="noopener" aria-label="Написати в Telegram"><Icon name="telegram" /></a>
+      <details class="menu" data-menu>
+        <summary class="header__icon menu__toggle" aria-label="Меню">
+          <Icon name="menu" class="menu__open" />
+          <Icon name="close" class="menu__close" />
+        </summary>
+        <div class="menu__panel">
+          <nav aria-label="Розділи сторінки (мобільне меню)" data-rec="U-R012">
+            <ul class="menu__list">
+              {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+            </ul>
+          </nav>
+          <ul class="menu__channels" data-rec="U-R006,U-R003">
+            <li><a href={contacts.telegram} target="_blank" rel="noopener"><Icon name="telegram" />Telegram</a></li>
+            <li><a href={contacts.phoneHref} class="num"><Icon name="phone" />{contacts.phoneText}</a></li>
+            <li><a href={`mailto:${contacts.email}`}><Icon name="mail" />{contacts.email}</a></li>
+          </ul>
+          <div class="menu__lang">
+            <span aria-current="true">UA</span>
+            <FutureLink note={NOTE_FUTURE}>EN</FutureLink>
+            <FutureLink note={NOTE_FUTURE}>RU</FutureLink>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Close the mobile menu after choosing an anchor or pressing Escape.
+  const menu = document.querySelector<HTMLDetailsElement>("[data-menu]");
+  if (menu) {
+    menu.onclick = (e) => {
+      const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(".menu__panel a");
+      if (!link) return;
+      const hash = link.getAttribute("href") || "";
+      menu.open = false;
+      // Closing the panel changes layout; scroll after it so the anchor jump is not lost.
+      if (hash.startsWith("#") && hash.length > 1) {
+        const target = document.querySelector(hash);
+        if (target) {
+          e.preventDefault();
+          requestAnimationFrame(() => {
+            target.scrollIntoView({ block: "start" });
+            history.pushState(null, "", hash);
+          });
+        }
+      }
+    };
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.open) { menu.open = false; menu.querySelector("summary")?.focus(); }
+    });
+    window.matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches) menu.open = false; });
+  }
+</script>
+
+<style>
+  .header { position: sticky; top: 0; z-index: 50; background: var(--color-bg); border-bottom: 1px solid var(--color-line); }
+  .header__inner { display: flex; align-items: center; gap: var(--s-3); height: var(--header-h); }
+  .header__logo { display: inline-flex; align-items: center; min-height: var(--tap); margin-right: auto; }
+  .header__logo img { width: 118px; height: auto; }
+  .header__nav ul { display: flex; gap: var(--s-3); }
+  .header__nav a, .header__phone { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 0.9375rem; font-weight: 500; text-decoration: none; color: var(--color-text); white-space: nowrap; transition: color var(--dur-fast) var(--ease-out); }
+  .header__nav a:hover, .header__phone:hover { color: var(--color-accent); }
+  .header__phone { font-weight: 600; }
+  .header__lang { align-items: center; gap: 0.75rem; font-size: var(--fs-small); color: var(--color-text-muted); }
+  .header__lang-current { color: var(--color-text); font-weight: 600; }
+  .header__cta { min-height: var(--tap); padding-inline: 1rem; font-size: 0.9375rem; }
+  .header__nav, .header__lang, .header__phone, .header__cta { display: none; }
+  .header__quick { display: flex; align-items: center; gap: 0.25rem; }
+  .header__icon { display: inline-grid; place-items: center; width: var(--tap); height: var(--tap); color: var(--color-text); border-radius: var(--radius); cursor: pointer; transition: color var(--dur-fast) var(--ease-out); }
+  .header__icon:hover { color: var(--color-accent); }
+
+  .menu summary { list-style: none; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu :global(.menu__close) { display: none; }
+  .menu[open] :global(.menu__open) { display: none; }
+  .menu[open] :global(.menu__close) { display: block; }
+  .menu__panel { position: fixed; inset: var(--header-h) 0 auto 0; max-height: calc(100dvh - var(--header-h)); overflow-y: auto; background: var(--color-bg); border-bottom: 1px solid var(--color-line); padding: var(--s-3) var(--gutter) var(--s-4); display: grid; gap: var(--s-3); }
+  .menu__list a { display: flex; align-items: center; min-height: 52px; font: 500 1.5rem/1.2 var(--font-display); font-variation-settings: var(--display-axes); text-decoration: none; color: var(--color-text); white-space: nowrap; border-bottom: 1px solid var(--color-line); }
+  .menu__channels { display: grid; gap: 0.25rem; }
+  .menu__channels a { display: flex; align-items: center; gap: 0.75rem; min-height: var(--tap); font-weight: 600; color: var(--color-text); text-decoration: none; white-space: nowrap; }
+  .menu__lang { display: flex; gap: var(--s-2); align-items: center; font-size: var(--fs-small); color: var(--color-text-muted); }
+  .menu__lang span[aria-current] { color: var(--color-text); font-weight: 600; }
+
+  @media (min-width: 1024px) {
+    .header__logo img { width: 132px; }
+    .header__nav, .header__lang, .header__phone { display: flex; }
+    .header__cta { display: inline-flex; }
+    .header__quick { display: none; }
+    .header__logo { margin-right: var(--s-2); }
+    .header__nav { margin-right: auto; }
+  }
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    .header__inner { gap: var(--s-2); }
+    .header__nav ul { gap: var(--s-2); }
+    .header__lang { display: none; }
+  }
+</style>

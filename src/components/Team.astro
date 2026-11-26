@@ -1,0 +1,45 @@
+---
+// «Команда проєкту»: three people from C-003 (photos from the current landing), the fourth item is text (C-001).
+import { team } from "../data/site";
+---
+<section id="team" class="team section" aria-labelledby="team-title">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="team-title">Команда проєкту</h2>
+      <p class="section__lead">Люди, які відповідають за ваш сайт від першої розмови до запуску.</p>
+    </div>
+    <ul class="team__list">
+      {team.map((m) => (
+        <li class="person">
+          <picture>
+            <source srcset={`/img/${m.file}.avif`} type="image/avif" />
+            <img src={`/img/${m.file}.webp`} alt={`${m.name}, ${m.role}`} width="290" height="290" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+          </picture>
+          <h3 class="person__name">{m.name}</h3>
+          <p class="person__role">{m.role}</p>
+        </li>
+      ))}
+      <li class="person person--text">
+        <p class="person__big person__big--word" aria-hidden="true">Офіс у&nbsp;Харкові</p>
+                <h3 class="person__name">Команда Brander</h3>
+        <p class="person__role">Розробники, маркетологи, дизайнери, тестувальники</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .team__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4) var(--gap); }
+  .person { display: grid; gap: 0.25rem; align-content: start; }
+  .person picture { display: block; margin-bottom: var(--s-2); background: var(--color-surface); aspect-ratio: 4 / 5; padding: var(--s-2); display: grid; place-items: center; }
+  .person img { width: 100%; height: auto; }
+  .person__name { font-size: 1.25rem; }
+  .person__role { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .person--text { align-content: start; }
+  .person__big { aspect-ratio: 4 / 5; display: grid; place-items: center; margin-bottom: var(--s-2); background: var(--color-accent); color: var(--color-accent-ink); font: 500 clamp(3rem, 2rem + 4vw, 5.25rem)/1 var(--font-display); font-variation-settings: var(--display-axes); }
+  .person__big--word { font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem); text-align: center; padding: var(--s-2); }
+  @media (min-width: 1024px) {
+    .team__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .person__name { font-size: var(--fs-h3); }
+  }
+</style>

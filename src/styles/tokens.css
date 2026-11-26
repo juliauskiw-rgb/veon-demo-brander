@@ -1,0 +1,96 @@
+/* Hallmark · shape: schema of connections (bus, stations, end node) · genre: modern-minimal · theme: custom · job: hire · idea: "Сайт, що з'єднує: головна як схема підключень — шина, станції, кінцевий вузол" · vibe: "інженерно, точно, ультрамарин полями, без декору" · surface: absolute white (#FFFFFF, approved in concept.md)
+ * paper: #ECEDF1 · accent: #2722FF · display: Geologica · body: IBM Plex Sans · hero: ультрамаринове поле, H1 звичайним регістром, дві прямі дії, горизонтальна шина шести вузлів · nav: light sticky bar, black wordmark, 5 anchors, phone as text, one button · footer: light compact, three channels, address, socials, future pages · imagery: client photos (case covers, team, video poster) · signature: шина з'єднань з шістьма вузлами в першому екрані
+ * axes: light/geometric-sans/chromatic-blue · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery (case covers are 1x crops of the client's own site), shown small in a fixed white frame with contain so the resolution holds */
+/* Hallmark · waive 23 · accent #2722FF fills the hero field · design/concept.md §5 «ультрамарин великими полями — перший екран і контакти» (approved concept, posture committed) */
+/* Hallmark · waive 28a · lazy images in Cases, Reviews, Team, Footer are below the fold; LCP is the hero H1 text */
+/* Hallmark · waive 7b · --color-surface and --color-on-accent are #FFFFFF · the approved palette in design/concept.md (veon-concept colors) has pure white for surfaces and text on ultramarine (7.6:1) */
+/* Hallmark · waive 11 · .index__preview picture scale 1.02 to 1 · effect 3 «Прев'ю кейсу» of the approved concept.md (opacity + scale, 260 ms), static under prefers-reduced-motion */
+/* Hallmark · answered F25 · on phones the case index shows two rows and «Показати всі кейси» reveals the rest in place (ux/demo-home.md §7) */
+/* Client design tokens from design/concept.md (veon-concept: colors, fonts). Breakpoints: 480 / 768 / 1024 / 1280. */
+
+/* Self-hosted fonts: WOFF2, cyrillic + latin only, swap (P-R007). */
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/geologica-cyrillic-shrp-normal.woff2") format("woff2-variations");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/geologica-latin-shrp-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-display: swap; font-weight: 400; src: url("/fonts/ibm-plex-sans-cyrillic-400-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-display: swap; font-weight: 500; src: url("/fonts/ibm-plex-sans-cyrillic-500-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-display: swap; font-weight: 600; src: url("/fonts/ibm-plex-sans-cyrillic-600-normal.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-display: swap; font-weight: 400; src: url("/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-display: swap; font-weight: 500; src: url("/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-display: swap; font-weight: 600; src: url("/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  /* Colour roles (concept.md, «Дизайн-система для FULL») */
+  --color-bg: #ECEDF1;
+  --color-surface: #FFFFFF;
+  --color-text: #0A0A14;
+  --color-text-muted: #4A4C5C;
+  --color-accent: #2722FF;
+  --color-on-accent: #FFFFFF;
+  --color-on-accent-muted: #D6D4FF;
+  --color-inverse-bg: #0A0A14;
+  --color-line: #C9CBD6;
+  --color-accent-ink: var(--color-on-accent);
+  --shadow-bar: 0 -8px 24px rgb(10 10 20 / 0.12);
+
+  /* Type */
+  --font-display: "Geologica", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --display-axes: "SHRP" 40;
+  --fs-h1: clamp(2.5rem, 1.479rem + 4.19vw, 5.25rem);
+  --fs-h2: clamp(2rem, 1.443rem + 2.286vw, 3.5rem);
+  --fs-h3: clamp(1.5rem, 1.314rem + 0.762vw, 2rem);
+  --fs-lead: clamp(1.1875rem, 1.141rem + 0.19vw, 1.3125rem);
+  --fs-body: clamp(1rem, 0.977rem + 0.095vw, 1.0625rem);
+  --fs-small: 0.875rem;
+  --fs-value: clamp(1.25rem, 1rem + 1vw, 2rem);
+  --lh-tight: 1.06;
+  --lh-head: 1.1;
+  --lh-text: 1.55;
+
+  /* Space: rhythm of 8 */
+  --s-1: 0.5rem;
+  --s-2: 1rem;
+  --s-3: 1.5rem;
+  --s-4: 2rem;
+  --s-5: 3rem;
+  --s-6: 4rem;
+  --s-7: 5rem;
+  --section-y: clamp(4.5rem, 2.64rem + 7.62vw, 8rem);
+  --gutter: clamp(1.25rem, 0.79rem + 1.9vw, 2.5rem);
+  --gap: 1.5rem;
+  --container: 1280px;
+  --space: var(--gutter);
+  --header-h: 64px;
+  --bar-h: 56px;
+
+  /* Shape */
+  --radius: 2px;
+  --line: 2px;
+  --node: 12px;
+  --btn-h: 52px;
+  --tap: 44px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 600ms;
+  --dur-fast: 160ms;
+  --dur-press: 120ms;
+}
+@media (min-width: 1024px) {
+  :root { --header-h: 72px; }
+}

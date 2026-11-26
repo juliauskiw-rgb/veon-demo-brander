@@ -1,0 +1,93 @@
+/* Shared styles of the Brander homepage: type, buttons, focus, FutureLink, section shells. Values from tokens.css only. */
+body { font-size: var(--fs-body); line-height: var(--lh-text); font-feature-settings: "kern" 1; }
+h1, h2, h3 { font-family: var(--font-display); font-variation-settings: var(--display-axes); margin: 0; color: inherit; }
+h1 { font-size: var(--fs-h1); font-weight: 500; line-height: var(--lh-tight); letter-spacing: -0.01em; }
+h2 { font-size: var(--fs-h2); font-weight: 500; line-height: var(--lh-head); letter-spacing: -0.005em; }
+h3 { font-size: var(--fs-h3); font-weight: 600; line-height: var(--lh-head); }
+p { margin: 0; }
+ul, ol, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+.num { font-variant-numeric: tabular-nums; }
+
+::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+html { scrollbar-color: var(--color-text-muted) var(--color-bg); }
+
+/* Focus: 2 px ring + 2 px offset, instant. Accent on light, white on accent and dark. */
+:focus-visible { outline: var(--line) solid var(--color-accent); outline-offset: 2px; transition: none; }
+.tone-accent :focus-visible, .tone-dark :focus-visible { outline-color: var(--color-on-accent); }
+
+.skip-link { background: var(--color-accent); color: var(--color-on-accent); font-weight: 600; text-decoration: none; }
+
+.container { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; }
+.section { padding-block: var(--section-y); }
+.section__head { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); max-width: 48rem; }
+.section__lead { font-size: var(--fs-lead); color: var(--color-text-muted); max-width: 40rem; }
+.tone-accent { background: var(--color-accent); color: var(--color-accent-ink); }
+.tone-dark { background: var(--color-inverse-bg); color: var(--color-on-accent); }
+.tone-surface { background: var(--color-surface); }
+.tone-accent .section__lead, .tone-dark .section__lead { color: var(--color-on-accent-muted); }
+
+/* Buttons */
+.btn {
+  --btn-bg: var(--color-accent); --btn-fg: var(--color-on-accent); --btn-bd: var(--color-accent);
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem;
+  min-height: var(--btn-h); padding: 0 1.25rem; border: 1.5px solid var(--btn-bd); border-radius: var(--radius);
+  background: var(--btn-bg); color: var(--btn-fg);
+  font: 600 1rem/1.2 var(--font-body); text-decoration: none; text-align: left; padding-block: 0.5rem;
+  transition: transform var(--dur-press) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.btn .icon { flex: none; }
+@media (min-width: 480px) { .btn { white-space: nowrap; } }
+.btn__arrow { transition: transform 180ms var(--ease-out); }
+.btn:hover .btn__arrow { transform: translateX(3px); }
+.btn:active { transform: scale(.98); }
+.btn--primary:hover { --btn-bg: var(--color-text); --btn-bd: var(--color-text); }
+.btn--secondary { --btn-bg: transparent; --btn-fg: var(--color-text); --btn-bd: var(--color-text); }
+.btn--secondary:hover { --btn-bg: var(--color-text); --btn-fg: var(--color-surface); }
+.tone-accent .btn--primary { --btn-bg: var(--color-on-accent); --btn-fg: var(--color-text); --btn-bd: var(--color-on-accent); }
+.tone-accent .btn--primary:hover { --btn-bg: var(--color-on-accent-muted); --btn-bd: var(--color-on-accent-muted); }
+.tone-accent .btn--secondary, .tone-dark .btn--secondary { --btn-fg: var(--color-on-accent); --btn-bd: var(--color-on-accent); }
+.tone-accent .btn--secondary:hover, .tone-dark .btn--secondary:hover { --btn-bg: var(--color-on-accent); --btn-fg: var(--color-text); }
+.tone-dark .btn--primary { --btn-bg: var(--color-on-accent); --btn-fg: var(--color-text); --btn-bd: var(--color-on-accent); }
+.tone-dark .btn--primary:hover { --btn-bg: var(--color-on-accent-muted); --btn-bd: var(--color-on-accent-muted); }
+
+/* Text links */
+.link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em; transition: color var(--dur-fast) var(--ease-out); }
+.link:hover { color: var(--color-accent); }
+.tone-accent .link:hover, .tone-dark .link:hover { color: var(--color-on-accent-muted); }
+
+/* FutureLink: dotted underline + note «Розділ у розробці» on hover and focus */
+.future-link { min-height: var(--tap); color: inherit; text-decoration: underline dotted; text-decoration-thickness: 1.5px; text-underline-offset: 0.25em; }
+.future-link[aria-disabled="true"] { cursor: default; }
+.future-link:hover .future-link__note, .future-link:focus-visible .future-link__note { transform: translateY(0); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.future-link:hover { color: var(--color-text-muted); }
+.tone-accent .future-link:hover, .tone-dark .future-link:hover { color: var(--color-on-accent-muted); }
+.future-link__note[aria-hidden="true"] { left: 0; transform: translateY(-4px); background: var(--color-text); color: var(--color-surface); font: 500 var(--fs-small)/1.2 var(--font-body); border-radius: var(--radius); }
+.tone-dark .future-link__note[aria-hidden="true"], .tone-accent .future-link__note[aria-hidden="true"] { left: 0; transform: translateY(-4px); background: var(--color-surface); color: var(--color-text); }
+
+/* Square node of the connection scheme */
+.node-mark { display: inline-block; flex: none; width: var(--node); height: var(--node); border: var(--line) solid currentColor; background: transparent; transition: background-color var(--dur-fast) var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover .btn__arrow, .btn:active { transform: none; }
+}
+/* Notes of FutureLinks near the right edge open to the left */
+.index__more .future-link__note[aria-hidden="true"], .footer__lang .future-link__note[aria-hidden="true"], .header__lang-item .future-link__note[aria-hidden="true"], .menu__lang .future-link__note[aria-hidden="true"] { left: auto; right: 0; }
+
+/* Case preview on 1440 (effect 3): one cover at a time, only once scripting runs; without JS the first cover stays on top */
+@media (min-width: 1024px) {
+    .js .index__preview picture { opacity: 0; transform: scale(1.02); }
+    .index__preview img { width: 100%; max-width: 383px; height: auto; object-fit: contain; }
+    .js .index__preview picture:first-child { opacity: 1; transform: none; }
+    .js .index:has(.index__row:hover) .index__preview picture:first-child,
+    .js .index:has(.index__row:focus-within) .index__preview picture:first-child { opacity: 0; transform: scale(1.02); }
+    .js .index:has(.index__row[data-case="business-diner"]:is(:hover, :focus-within)) .index__preview [data-case="business-diner"],
+    .js .index:has(.index__row[data-case="capri"]:is(:hover, :focus-within)) .index__preview [data-case="capri"],
+    .js .index:has(.index__row[data-case="chudo-ostriv"]:is(:hover, :focus-within)) .index__preview [data-case="chudo-ostriv"],
+    .js .index:has(.index__row[data-case="damilk"]:is(:hover, :focus-within)) .index__preview [data-case="damilk"],
+    .js .index:has(.index__row[data-case="flawlessly"]:is(:hover, :focus-within)) .index__preview [data-case="flawlessly"] { opacity: 1; transform: none; }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .js .index__preview picture { transform: none !important; }
+}

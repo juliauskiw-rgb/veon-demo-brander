@@ -1,0 +1,79 @@
+---
+// Light compact footer: channels, address, confirmed socials, future pages (FutureLink), languages. No giant wordmark.
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import { contacts, socials, NOTE_FUTURE } from "../data/site";
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="footer__logo" href="#top" data-rec="U-R001" aria-label="Brander — на початок сторінки">
+        <img src="/brander-logo.svg" alt="Brander" width="147" height="41" loading="lazy" />
+      </a>
+      <p class="footer__address">{contacts.address}</p>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Зв'язатися</h2>
+      <ul class="footer__links" data-rec="U-R006,U-R003">
+        <li><a class="link" href={contacts.telegram} target="_blank" rel="noopener">Telegram</a></li>
+        <li><a class="link num" href={contacts.phoneHref}>{contacts.phoneText}</a></li>
+        <li><a class="link" href={`mailto:${contacts.email}`}>{contacts.email}</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Сторінки</h2>
+      <ul class="footer__links">
+        <li><FutureLink note={NOTE_FUTURE}>Кейси</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE}>Контакти</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE}>Політика конфіденційності</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE}>Інші напрями Brander</FutureLink></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Соцмережі</h2>
+      <ul class="footer__social" data-rec="SM-R012">
+        {socials.map((s) => (
+          <li><a href={s.href} target="_blank" rel="noopener" aria-label={s.name}><Icon name={s.icon} /></a></li>
+        ))}
+      </ul>
+      <div class="footer__lang" role="group" aria-label="Мова сайту">
+        <span aria-current="true">UA</span>
+        <FutureLink note={NOTE_FUTURE}>EN</FutureLink>
+        <FutureLink note={NOTE_FUTURE}>RU</FutureLink>
+      </div>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <p>© 2026 Brander</p>
+  </div>
+</footer>
+
+<style>
+  .footer { padding-block: var(--s-6) var(--s-4); border-top: 1px solid var(--color-line); font-size: 0.9375rem; }
+  .footer__grid { display: grid; gap: var(--s-4); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand { grid-column: 1 / -1; display: grid; gap: var(--s-2); justify-items: start; }
+  .footer__logo { display: inline-flex; min-height: var(--tap); align-items: center; }
+  .footer__logo img { width: 118px; height: auto; }
+  .footer__address { color: var(--color-text-muted); }
+  .footer__title { font: 600 var(--fs-small)/1.3 var(--font-body); color: var(--color-text-muted); margin-bottom: var(--s-1); }
+  .footer__links li { display: flex; align-items: center; min-height: var(--tap); }
+  .footer__links a { overflow-wrap: anywhere; }
+  .footer__col:nth-of-type(2) { grid-column: 1 / -1; }
+  .footer__social { display: flex; gap: 0.25rem; margin-left: calc(-1 * var(--s-1)); }
+  .footer__social a { display: inline-grid; place-items: center; width: var(--tap); height: var(--tap); color: var(--color-text); transition: color var(--dur-fast) var(--ease-out); }
+  .footer__social a:hover { color: var(--color-accent); }
+  .footer__lang { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-2); color: var(--color-text-muted); }
+  .footer__lang span[aria-current] { color: var(--color-text); font-weight: 600; }
+  .footer__bottom { margin-top: var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--color-line); color: var(--color-text-muted); font-size: var(--fs-small); }
+  @media (min-width: 768px) {
+    .footer__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .footer__col:nth-of-type(2) { grid-column: auto; }
+  }
+  @media (min-width: 1024px) {
+    .footer__grid { grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr)); }
+    .footer__brand { grid-column: auto; }
+  }
+</style>

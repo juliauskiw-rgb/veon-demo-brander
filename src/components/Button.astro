@@ -1,0 +1,25 @@
+---
+// Primary / secondary action. Always a real link (tel:, mailto:, t.me, #anchor).
+import Icon from "./Icon.astro";
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary";
+  icon?: "telegram" | "phone" | "mail" | "youtube";
+  rec?: string;
+  class?: string;
+  external?: boolean;
+  label?: string;
+}
+const { href, variant = "primary", icon, rec, class: cls, external = false, label } = Astro.props;
+---
+<a
+  class:list={["btn", `btn--${variant}`, cls]}
+  href={href}
+  data-rec={rec}
+  aria-label={label}
+  {...(external ? { target: "_blank", rel: "noopener" } : {})}
+>
+  {icon && <Icon name={icon} />}
+  <span class="btn__text"><slot /></span>
+  <Icon name="arrow" class="btn__arrow" size={18} />
+</a>

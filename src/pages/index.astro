@@ -1,0 +1,51 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Cases from "../components/Cases.astro";
+import Expertise from "../components/Expertise.astro";
+import Process from "../components/Process.astro";
+import Reviews from "../components/Reviews.astro";
+import Team from "../components/Team.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import StickyBar from "../components/StickyBar.astro";
+import { contacts, socials } from "../data/site";
+
+const title = "Створення корпоративних сайтів під ключ — Brander, Харків";
+const description = "Корпоративні сайти й портали на Drupal, WordPress і Laravel з інтеграціями CRM та ERP. Discovery, оцінка, дизайн, розробка, підтримка. Brander — з 2009 року.";
+
+// JSON-LD (S-R005, partly): Organization, WebSite, Service. No URLs of the client's current domains.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "#organization",
+      name: "Brander",
+      logo: "/brander-logo.svg",
+      foundingDate: "2009",
+      telephone: "+380630212046",
+      email: contacts.email,
+      address: { "@type": "PostalAddress", streetAddress: "вул. Георгія Тарасенка, 66", addressLocality: "Харків", addressCountry: "UA" },
+      sameAs: socials.map((s) => s.href),
+    },
+    { "@type": "WebSite", name: "Brander — корпоративні сайти", inLanguage: "uk", publisher: { "@id": "#organization" } },
+    { "@type": "Service", name: "Розробка корпоративних сайтів", serviceType: "Корпоративні сайти й портали", provider: { "@id": "#organization" }, areaServed: { "@type": "Country", name: "Україна" } },
+  ],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <link slot="head" rel="preload" href="/fonts/geologica-cyrillic-shrp-normal.woff2" as="font" type="font/woff2" crossorigin data-rec="P-R007" />
+  <script slot="head" type="application/ld+json" data-rec="S-R005" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Cases />
+  <Expertise />
+  <Process />
+  <Reviews />
+  <Team />
+  <Contact />
+  <Footer slot="footer" />
+  <StickyBar slot="footer" />
+</Base>

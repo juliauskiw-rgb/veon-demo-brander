@@ -1,0 +1,197 @@
+---
+// Cases: client logos strip, expanded Apple Mania with the migration scheme (C-005), index of five cases (C-004)
+// with a sticky preview frame on 1440 (CSS :has, effect 3) and 72 px thumbnails on phones, «Показати всі».
+import FutureLink from "./FutureLink.astro";
+import { cases, featuredCase, clientLogos, NOTE_FUTURE } from "../data/site";
+const payments = ["LiqPay", "Platon", "WayForPay", "monobank", "ПриватБанк"];
+const delivery = ["Нова Пошта", "Укрпошта"];
+---
+<section id="cases" class="cases section" data-rec="U-R007,U-R008" aria-labelledby="cases-title">
+  <div class="container">
+    <div class="cases__clients">
+      <p class="cases__clients-title">Серед клієнтів</p>
+      <ul class="cases__logos">
+        {clientLogos.map((l) => (
+          <li><img src={`/img/${l.file}.webp`} alt={l.name} width={l.w} height={l.h} loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" /></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="section__head">
+      <h2 id="cases-title">Кейси, які ми запустили</h2>
+      <p class="section__lead">Тип кожного проєкту підписаний чесно: більшість робіт на цьому лендингу — інтернет-магазини й сервіси.</p>
+    </div>
+
+    <article class="feature tone-surface" aria-labelledby="case-apple-mania">
+      <div class="feature__info">
+        <picture>
+          <source srcset={`/img/case-${featuredCase.slug}.avif`} type="image/avif" />
+          <img class="feature__cover" src={`/img/case-${featuredCase.slug}.webp`} alt="Обкладинка кейсу Apple Mania: смартфони Apple" width="383" height="383" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+        </picture>
+        <h3 id="case-apple-mania">{featuredCase.name}</h3>
+        <p class="feature__type">{featuredCase.type}, {featuredCase.year}</p>
+        <p class="feature__text">Міграція з OpenCart на Magento 2.3 з новим UX і дизайном, оплатами, доставкою, бонусною програмою й обміном даними з 1С.</p>
+        <dl class="facts">
+          {featuredCase.facts.map((f) => (<div><dt>{f.k}</dt><dd class="num">{f.v}</dd></div>))}
+        </dl>
+        <FutureLink note={NOTE_FUTURE} class="feature__more">Детальніше про кейс Apple Mania</FutureLink>
+      </div>
+
+      <figure class="migration" aria-label="Схема міграції Apple Mania">
+        <div class="migration__path">
+          <p class="migration__item migration__from"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Було</span><s>OpenCart</s></p>
+          <p class="migration__item migration__core"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Стало</span>Magento 2.3</p>
+        </div>
+        <ul class="migration__links" aria-label="Що підключено до магазину">
+          <li class="migration__item"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Облік</span>1С</li>
+          <li class="migration__item"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Оплати</span>{payments.join(", ")}</li>
+          <li class="migration__item"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Доставка</span>{delivery.join(", ")}</li>
+          <li class="migration__item"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Пошук</span>Elasticsearch</li>
+          <li class="migration__item"><span class="node-mark" aria-hidden="true"></span><span class="migration__k">Лояльність</span>Бонусна програма</li>
+        </ul>
+        <figcaption class="migration__cap">3 місяці від початку до запуску</figcaption>
+      </figure>
+    </article>
+
+    <div class="index" data-cases-index>
+      <ul class="index__list">
+        {cases.map((c, i) => (
+          <li class="index__row" data-case={c.slug} style={`--i:${i}`}>
+            <picture class="index__thumb">
+              <img src={`/img/case-${c.slug}-thumb.webp`} alt="" width="144" height="144" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+            </picture>
+            <div class="index__body">
+              <h3 class="index__name">{c.name}</h3>
+              <p class="index__type">{c.type}</p>
+              {c.facts.length > 0 && (
+                <dl class="facts facts--row">
+                  {c.facts.map((f) => (<div><dt>{f.k}</dt><dd class="num">{f.v}</dd></div>))}
+                </dl>
+              )}
+            </div>
+            <FutureLink note={NOTE_FUTURE} class="index__more">Кейс {c.name}</FutureLink>
+          </li>
+        ))}
+      </ul>
+      <div class="index__preview" aria-hidden="true">
+        {cases.map((c) => (
+          <picture data-case={c.slug}>
+            <source srcset={`/img/case-${c.slug}.avif`} type="image/avif" />
+            <img src={`/img/case-${c.slug}.webp`} alt="" width="383" height="383" loading="lazy" decoding="async" />
+          </picture>
+        ))}
+      </div>
+    </div>
+
+    <div class="cases__foot">
+      <button class="btn btn--secondary cases__all-btn" type="button" data-show-all hidden>Показати всі кейси</button>
+      <FutureLink note={NOTE_FUTURE} class="cases__all">Усі кейси</FutureLink>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Phones: show two index rows and reveal the rest in place (no carousel, no navigation).
+  const index = document.querySelector<HTMLElement>("[data-cases-index]");
+  const btn = document.querySelector<HTMLButtonElement>("[data-show-all]");
+  if (index && btn) {
+    index.dataset.collapsed = "";
+    btn.hidden = false;
+    btn.setAttribute("aria-expanded", "false");
+    btn.onclick = () => {
+      delete index.dataset.collapsed;
+      btn.setAttribute("aria-expanded", "true");
+      btn.hidden = true;
+      index.querySelector<HTMLElement>(".index__row:nth-child(3) .future-link")?.focus();
+    };
+  }
+</script>
+
+<style>
+  .cases__clients { display: grid; gap: var(--s-2); padding-bottom: var(--s-5); margin-bottom: var(--s-6); border-bottom: 1px solid var(--color-line); }
+  .cases__clients-title { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .cases__logos { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
+  .cases__logos img { height: 28px; width: auto; }
+
+  .feature { display: grid; gap: var(--s-5); padding: var(--s-4) var(--s-3); border-radius: var(--radius); }
+  .feature__info { display: grid; gap: var(--s-2); align-content: start; }
+  .feature__cover { width: 120px; height: 120px; object-fit: contain; margin-bottom: var(--s-1); }
+  .feature__type { color: var(--color-text-muted); }
+  .feature__text { max-width: 34rem; }
+  .facts { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-1); }
+  .facts dt { font-size: var(--fs-small); color: var(--color-text-muted); }
+  .facts dd { font: 600 var(--fs-h3)/1.1 var(--font-display); font-variation-settings: var(--display-axes); }
+  .facts--row { gap: var(--s-1) var(--s-3); margin-top: 0.25rem; }
+  .facts--row div { display: flex; gap: 0.5rem; align-items: baseline; }
+  .facts--row dd { font: 600 1rem/1.3 var(--font-body); }
+  .feature :global(.feature__more) { justify-self: start; font-weight: 600; }
+
+  /* Migration scheme: one vertical line on phones; path (from → core) and links side by side on wide screens */
+  .migration { margin: 0; display: grid; }
+  .migration__path, .migration__links { position: relative; display: grid; gap: var(--s-3); }
+  .migration__path::before, .migration__links::before { content: ""; position: absolute; left: calc(var(--node) / 2 - 1px); top: 0.5rem; bottom: 0; width: var(--line); background: var(--color-accent); }
+  .migration__links { padding-top: var(--s-3); }
+  .migration__links::before { top: 0; bottom: auto; height: calc(100% - 1.6rem); }
+  .migration__item { position: relative; padding-left: calc(var(--node) + 0.75rem); margin: 0; }
+  .migration__item .node-mark { position: absolute; left: 0; top: 0.35rem; color: var(--color-accent); background: var(--color-surface); }
+  .migration__k { display: block; font-size: var(--fs-small); color: var(--color-text-muted); }
+  .migration__core { font: 600 var(--fs-h3)/1.15 var(--font-display); font-variation-settings: var(--display-axes); }
+  .migration__core .migration__k { font: 400 var(--fs-small)/1.55 var(--font-body); }
+  .migration__core .node-mark { background: var(--color-accent); top: 1.85rem; }
+  .migration__from s { color: var(--color-text-muted); text-decoration-thickness: 1px; }
+  .migration__cap { margin-top: var(--s-3); padding-top: var(--s-2); border-top: 1px solid var(--color-line); font-weight: 600; }
+
+  /* Index */
+  .index { margin-top: var(--s-6); }
+  .index__row { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--s-1) var(--s-2); padding-block: var(--s-3); border-top: 1px solid var(--color-line); }
+  .index__row:last-child { border-bottom: 1px solid var(--color-line); }
+  .index__thumb img { width: 72px; height: 72px; object-fit: contain; background: var(--color-surface); }
+  .index__body { display: grid; gap: 0.25rem; min-width: 0; }
+  .index__name { font-size: var(--fs-h3); }
+  .index__type { color: var(--color-text-muted); }
+  .index__row :global(.index__more) { grid-column: 2; justify-self: start; font-size: var(--fs-small); font-weight: 600; }
+  .index__preview { display: none; }
+  :global(.js) .index[data-collapsed] .index__row:nth-child(n + 3) { display: none; }
+  :global(.js) .index[data-collapsed] .index__row:nth-child(2) { border-bottom: 1px solid var(--color-line); }
+
+  .cases__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); margin-top: var(--s-4); }
+  .cases__all-btn[hidden] { display: none; }
+  .cases__foot :global(.cases__all) { font-weight: 600; }
+
+  @media (min-width: 768px) {
+    .feature { padding: var(--s-5); }
+    .index__row { grid-template-columns: 96px minmax(0, 1fr) auto; align-items: center; }
+    .index__thumb img { width: 96px; height: 96px; }
+    .index__row :global(.index__more) { grid-column: auto; }
+    :global(.js) .index[data-collapsed] .index__row:nth-child(n + 3) { display: grid; }
+    :global(.js) .index[data-collapsed] .index__row:nth-child(2) { border-bottom: 0; }
+    .cases__all-btn { display: none; }
+  }
+
+  @media (min-width: 1024px) {
+    .feature { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-6); padding: var(--s-6) var(--s-5); }
+    .migration { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: var(--s-4); align-items: start; }
+    .migration__path { padding-top: 0; }
+    .migration__path::before { bottom: 2rem; }
+    .migration__links { padding-top: 0; }
+    .migration__links::before { top: 0.5rem; height: auto; bottom: 1.6rem; }
+    .migration__core { padding-top: var(--s-5); }
+    .migration__core .node-mark { top: calc(var(--s-5) + 1.85rem); }
+    .migration__cap { grid-column: 1 / -1; }
+
+    .index { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-6); align-items: start; }
+    .index__row { grid-template-columns: minmax(0, 1fr) auto; padding-block: var(--s-4); }
+    .index__thumb { display: none; }
+    .index__name { font-size: clamp(2rem, 1rem + 1.6vw, 2.5rem); transition: color var(--dur-fast) var(--ease-out); }
+    .index__row:hover .index__name, .index__row:focus-within .index__name { color: var(--color-accent); }
+
+    .index__preview { display: grid; position: sticky; top: calc(var(--header-h) + var(--s-4)); aspect-ratio: 1; background: var(--color-surface); }
+    .index__preview picture { grid-area: 1 / 1; display: grid; place-items: center; padding: var(--s-5); background: var(--color-surface); transition: opacity 260ms var(--ease-out), transform 260ms var(--ease-out); }
+    .index__preview picture:first-child { z-index: 1; }
+    /* hidden states of the preview live in styles/site.css (scoped under .js) */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .index__preview picture { transition: none; transform: none !important; }
+  }
+</style>

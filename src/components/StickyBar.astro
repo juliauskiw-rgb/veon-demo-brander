@@ -1,0 +1,40 @@
+---
+// Phones only: sticky bottom bar «Подзвонити, Telegram, E-mail», shown after the first screen (hidden from 1024).
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<nav class="bar" aria-label="Швидкий зв'язок" data-rec="U-R006" data-bar>
+  <a href={contacts.phoneHref}><Icon name="phone" />Подзвонити</a>
+  <a href={contacts.telegram} target="_blank" rel="noopener"><Icon name="telegram" />Telegram</a>
+  <a href={`mailto:${contacts.email}`} data-rec="U-R003"><Icon name="mail" />E-mail</a>
+</nav>
+
+<script>
+  // Show the bar once the hero has left the screen. Without scripting the bar is always visible.
+  const bar = document.querySelector<HTMLElement>("[data-bar]");
+  const hero = document.getElementById("hero");
+  if (bar && hero && "IntersectionObserver" in window) {
+    bar.classList.add("bar--hidden");
+    new IntersectionObserver(([e]) => {
+      const off = !e.isIntersecting;
+      bar.classList.toggle("bar--hidden", !off);
+      bar.inert = !off;
+    }, { threshold: 0 }).observe(hero);
+  }
+</script>
+
+<style>
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: calc(var(--bar-h) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: var(--color-surface); box-shadow: var(--shadow-bar); transition: transform 240ms var(--ease-out); }
+  .bar a { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; color: var(--color-text); font-size: var(--fs-small); font-weight: 600; text-decoration: none; border-left: 1px solid var(--color-line); }
+  .bar a:first-child { border-left: 0; }
+  .bar a:active { color: var(--color-accent); }
+  .bar--hidden { transform: translateY(110%); }
+  :global(body) { padding-bottom: var(--bar-h); }
+  @media (min-width: 1024px) {
+    .bar { display: none; }
+    :global(body) { padding-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bar { transition: none; }
+  }
+</style>
