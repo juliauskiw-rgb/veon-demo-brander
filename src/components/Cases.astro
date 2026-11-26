@@ -12,7 +12,7 @@ const delivery = ["Нова Пошта", "Укрпошта"];
       <p class="cases__clients-title">Серед клієнтів</p>
       <ul class="cases__logos">
         {clientLogos.map((l) => (
-          <li><img src={`/img/${l.file}.webp`} alt={l.name} width={l.w} height={l.h} loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" /></li>
+          <li><img src={`${import.meta.env.BASE_URL}img/${l.file}.webp`} alt={l.name} width={l.w} height={l.h} loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" /></li>
         ))}
       </ul>
     </div>
@@ -25,8 +25,8 @@ const delivery = ["Нова Пошта", "Укрпошта"];
     <article class="feature tone-surface" aria-labelledby="case-apple-mania">
       <div class="feature__info">
         <picture>
-          <source srcset={`/img/case-${featuredCase.slug}.avif`} type="image/avif" />
-          <img class="feature__cover" src={`/img/case-${featuredCase.slug}.webp`} alt="Обкладинка кейсу Apple Mania: смартфони Apple" width="383" height="383" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+          <source srcset={`${import.meta.env.BASE_URL}img/case-${featuredCase.slug}.avif`} type="image/avif" />
+          <img class="feature__cover" src={`${import.meta.env.BASE_URL}img/case-${featuredCase.slug}.webp`} alt="Обкладинка кейсу Apple Mania: смартфони Apple" width="383" height="383" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
         </picture>
         <h3 id="case-apple-mania">{featuredCase.name}</h3>
         <p class="feature__type">{featuredCase.type}, {featuredCase.year}</p>
@@ -58,7 +58,7 @@ const delivery = ["Нова Пошта", "Укрпошта"];
         {cases.map((c, i) => (
           <li class="index__row" data-case={c.slug} style={`--i:${i}`}>
             <picture class="index__thumb">
-              <img src={`/img/case-${c.slug}-thumb.webp`} alt="" width="144" height="144" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+              <img src={`${import.meta.env.BASE_URL}img/case-${c.slug}-thumb.webp`} alt="" width="144" height="144" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
             </picture>
             <div class="index__body">
               <h3 class="index__name">{c.name}</h3>
@@ -76,8 +76,8 @@ const delivery = ["Нова Пошта", "Укрпошта"];
       <div class="index__preview" aria-hidden="true">
         {cases.map((c) => (
           <picture data-case={c.slug}>
-            <source srcset={`/img/case-${c.slug}.avif`} type="image/avif" />
-            <img src={`/img/case-${c.slug}.webp`} alt="" width="383" height="383" loading="lazy" decoding="async" />
+            <source srcset={`${import.meta.env.BASE_URL}img/case-${c.slug}.avif`} type="image/avif" />
+            <img src={`${import.meta.env.BASE_URL}img/case-${c.slug}.webp`} alt="" width="383" height="383" loading="lazy" decoding="async" />
           </picture>
         ))}
       </div>

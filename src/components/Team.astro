@@ -12,8 +12,8 @@ import { team } from "../data/site";
       {team.map((m) => (
         <li class="person">
           <picture>
-            <source srcset={`/img/${m.file}.avif`} type="image/avif" />
-            <img src={`/img/${m.file}.webp`} alt={`${m.name}, ${m.role}`} width="290" height="290" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+            <source srcset={`${import.meta.env.BASE_URL}img/${m.file}.avif`} type="image/avif" />
+            <img src={`${import.meta.env.BASE_URL}img/${m.file}.webp`} alt={`${m.name}, ${m.role}`} width="290" height="290" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
           </picture>
           <h3 class="person__name">{m.name}</h3>
           <p class="person__role">{m.role}</p>

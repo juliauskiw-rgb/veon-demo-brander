@@ -10,8 +10,8 @@ const youtube = socials.find((s) => s.name === "YouTube")!.href;
   <div class="container reviews__grid">
     <a class="poster" href={youtube} target="_blank" rel="noopener" aria-label="Відеовідгуки клієнтів на YouTube-каналі Brander">
       <picture>
-        <source srcset="/img/review-zolotyi-vik.avif" type="image/avif" />
-        <img src="/img/review-zolotyi-vik.webp" alt="Кадр відеовідгуку компанії Золотий Вік" width="832" height="468" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
+        <source srcset={`${import.meta.env.BASE_URL}img/review-zolotyi-vik.avif`} type="image/avif" />
+        <img src={`${import.meta.env.BASE_URL}img/review-zolotyi-vik.webp`} alt="Кадр відеовідгуку компанії Золотий Вік" width="832" height="468" loading="lazy" decoding="async" data-rec="P-R002,P-R006,S-R006" />
       </picture>
       <span class="poster__cap"><Icon name="youtube" size={22} />Золотий Вік, відеовідгук</span>
     </a>
